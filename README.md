@@ -1,3 +1,13 @@
+This is a slightly modified version of [Eric Barch's Dockuwiki](https://github.com/ericbarch/dockuwiki).
+
+Sometimes, if you self-host a personal git server (like I do), then you do not expose SSH on the standard port 22. As a result, if you choose to use Dockuwiki with your git server, then the bootstrap script does not work properly, because `ssh-keyscan` is not called with the `-p` option. To fix this, I have slightly modified this script to look for a port in the `SSH_DOMAIN` environment variable.
+
+For example, if your server is located at `git.example.com` and the SSH port is 8000. Then, `SSH_DOMAIN` can be defined (on the command line or in your docker-compose) as `git.example.com:8000`, and `ssh-keyscan` will be called with `-p 8000`. The script still works as intended if you do not define a custom port.
+
+The original README for Dockuwiki (kept below) still stands in every other aspect. To use this modified image, pull `nairvish/dockuwiki` instead of `ericbarch/dockuwiki`.
+
+---
+
 # DockuWiki
 A good old fashioned self backup-ing doku**wiki** in a box.
 
