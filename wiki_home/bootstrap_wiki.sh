@@ -28,7 +28,13 @@ if [ ! -d "$SSH_DIRECTORY" ]; then
 			break
 		else
 			echo "scanning SSH host for keys..."
-			ssh-keyscan $SSH_DOMAIN > $SSH_DIRECTORY/known_hosts
+                        # check if these's a colon in the domain. if there is, then a port has been appended
+                        if [[ $SSH_DOMAIN = *:* ]] ; then
+                            IFS=':' read -ra arrDOMAIN <<< "$SSH_DOMAIN"
+                            ssh-keyscan -p ${arrDOMAIN[1]} ${arrDOMAIN[0]} > $SSH_DIRECTORY/known_hosts
+                        else
+			    ssh-keyscan $SSH_DOMAIN > $SSH_DIRECTORY/known_hosts
+                        fi
 			sleep 1
 		fi
 	done
